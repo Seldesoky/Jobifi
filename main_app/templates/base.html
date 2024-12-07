@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jobifi</title>
+        {% block head %} 
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <!-- Future Logo? -->
+        </header>
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                <li><a href="">Profile</a></li>
+                <li><a href="">Jobs</a></li>
+                <li>
+                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'home' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            </ul>
+        </nav>
+        <main>
+            {% block content %} 
+            {% endblock %}
+        </main>
+        
+    </body>
+</html>
