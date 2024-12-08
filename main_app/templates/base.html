@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobifi</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <!-- NavBar -->
+    <header>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="{% url 'home' %}" class="logo">Jobifi</a>
+            </div>
+            <div class="navbar-center">
+                <a href="{% url 'home' %}">Home</a>
+            </div>
+            
+            <div class="navbar-right">
+                <a href="#">Login</a>
+                <a href="#">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
