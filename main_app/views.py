@@ -7,17 +7,8 @@ from .models import UserProfile
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 
-# Change Django registration to custom template "accounts"
-class CustomLoginView(LoginView):
-    template_name = 'accounts/login.html'
-    redirect_authenticated_user = True
 
-    def get_success_url(self):
-        return reverse_lazy('home')
-    
-class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('home')
-# Create your views here.
+# Create your views Below.
 
 def home(request):
     return render(request, 'home.html')
@@ -65,4 +56,22 @@ def register_user(request):
     
     # Render registration form
     return render(request, 'accounts/register.html')
+# Change Django registration to custom template "accounts"
+class CustomLoginView(LoginView):
 
+    template_name = 'accounts/login.html'
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('home')   
+     
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy('home')
+
+# Login_Required
+
+def job_seeker_profile(request):
+    return render(request, 'profile/job_seeker.html')
+
+def employer_profile(request):
+    return(request, 'profile/empolyer.html')
