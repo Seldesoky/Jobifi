@@ -1,20 +1,28 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import login
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 from .models import UserProfile
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
+
+# Change Django registration to custom template "accounts"
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login.html'
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+    
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy('home')
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html')
 
 #Authentication / Creation of Users
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import login
-from django.contrib import messages
-from .models import UserProfile
 
 def register_user(request):
     if request.method == "POST":
@@ -57,3 +65,4 @@ def register_user(request):
     
     # Render registration form
     return render(request, 'accounts/register.html')
+
