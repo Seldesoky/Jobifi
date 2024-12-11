@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, JobPosting
+from .forms import JobPostingForm
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 
 
@@ -69,15 +71,61 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('home')   
      
-
 def logout_view(request):
     logout(request)
     return redirect('login')
 
+#Job Views
+
+def job_list(request):
+    jobs = JobPosting.objects.all()
+    return render(request, 'jobs/job_list.html', {'jobs' : jobs})
+
+def job_detail(request, id):
+    job = get_object_or_404(JobPosting, id=id)
+    return render(request, 'jobs/job_detail.html', {'job': job})
+
+
 # Login_Required
+@login_required
 
 def job_seeker_profile(request):
     return render(request, 'profile/job_seeker.html')
 
 def employer_profile(request):
     return(request, 'profile/empolyer.html')
+
+#Job CRUD
+def job_create(request):
+    if request.method == 'POST':
+        form = JobPostingForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.posted_by = request.user
+            job.save()
+            messages.success(request, 'Job posting created successfully.')
+            return redirect('job_list')
+    else:
+        form = JobPostingForm()
+    return render(request, 'jobs/job_form.html', {'form': form})
+
+def job_edit(request, id):
+    job = get_object_or_404(JobPosting, id=id)
+    if request.method == 'POST':
+        form = JobPostingForm(request.POST, isinstance=job)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Job posting updated successfully.')
+            return redirect('job_list')
+    else:
+        form = JobPostingForm(instance=job)
+    return render(request, 'jobs/job_form.html', {'form': form, 'job': job})
+
+def job_delete(request, id):
+    job = get_object_or_404(JobPosting, id=id)
+    if request.method == 'POST':
+        job.delete()
+        messages.success(request, 'Job posting deleted')
+        return redirect('job_list')
+    
+    return render(request, 'jobs/job_confirm_delete.html', {'job': job})
