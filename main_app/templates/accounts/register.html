@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/accounts/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <h1>Register</h1>
+    <form method="POST" action="{% url 'register_user' %}">
+        {% csrf_token %}
+        
+        <!-- User -->
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <!-- Password / Confirm Password -->
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password_confirm">Confirm Password:</label>
+            <input type="password" id="password_confirm" name="password_confirm" required>
+        </div>
+        
+        <!-- Phone Number -->
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number">
+        </div>
+        
+        <!-- Bio -->
+        <div class="form-group">
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" rows="3"></textarea>
+        </div>
+        
+        <!-- Role -->
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select id="role" name="role">
+                <option value="job_seeker">Job Seeker</option>
+                <option value="employer">Employer</option>
+            </select>
+        </div>
+
+        <!-- Create Uuser -->
+        <button type="submit" class="register-button">Register</button>
+    </form>
+</div>
+{% endblock %}
