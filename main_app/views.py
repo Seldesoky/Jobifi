@@ -1,7 +1,6 @@
 <<<<<<< HEAD
 from django.shortcuts import render
 from .models import Company
-=======
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login
@@ -10,20 +9,18 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import UserProfile
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
->>>>>>> 2665601e79a706efc91154baa37ee9c20ff8b270
 
-
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Create your views Below.
 
 def home(request):
     return render(request, 'home.html')
 
-<<<<<<< HEAD
+
 def company_page(request):
     
 
     return render(request, 'company/detail.html',)
-=======
 #Authentication / Creation of Users
 
 def register_user(request):
@@ -86,4 +83,20 @@ def job_seeker_profile(request):
 
 def employer_profile(request):
     return(request, 'profile/empolyer.html')
->>>>>>> 2665601e79a706efc91154baa37ee9c20ff8b270
+
+
+
+class CompanyCreate(CreateView):
+    model = Company
+    fields = '__all__'
+    #TODO Check when im home - Possible conflict without upload functionality / logo 
+    success_url = '/companies/'
+
+class CompanyUpdate(UpdateView):
+    model = Company
+    fields = ['description', 'location', 'industry', 'website', 'logo']
+    # everything aside from the name
+
+class CompanyDelete(DeleteView):
+    model = Company
+    success_url = '/companies/'
