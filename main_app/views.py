@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.shortcuts import render
 from .models import Company
 from django.shortcuts import render, redirect
@@ -72,7 +71,7 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('home')   
-     
+    
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('home')
 
