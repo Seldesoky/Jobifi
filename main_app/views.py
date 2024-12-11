@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
 from .models import UserProfile
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 
 
@@ -28,14 +27,17 @@ def register_user(request):
         # Password check
         if password != password_confirm:
             messages.error(request, "Passwords do not match.")
+            print('pass1')
             return redirect("register_user")
 
         # If there is already an existing account
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username is already in use.")
+            print('user2')
             return redirect("register_user")
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email is already in use.")
+            print('email3')
             return redirect("register_user")
         
         # Create User
@@ -49,7 +51,9 @@ def register_user(request):
             )
             login(request, user)
             messages.success(request, "User has been created successfully.")
+            print('home4')
             return redirect("home")
+        
         except Exception as e:
             messages.error(request, f"Error creating user: {e}")
             return redirect("register_user")
@@ -65,8 +69,10 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('home')   
      
-class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('home')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 # Login_Required
 
