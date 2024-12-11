@@ -8,7 +8,7 @@ urlpatterns = [
     #Authentication
     path('accounts/register/', views.register_user, name='register_user'),
     path('accounts/login/', CustomLoginView.as_view(), name='login'),
-    path('accounts/logout/', views.logout_view, name='logout'),
+    path('accounts/logout', views.logout_view, name='logout'),
 
 
     #Login Pages
