@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,20 +16,36 @@
     <!-- NavBar -->
     <header>
         <nav class="navbar">
-            <div class="navbar-left">
-                <a href="{% url 'home' %}" class="logo">Jobifi</a>
-            </div>
-            <div class="navbar-center">
-                <a href="{% url 'home' %}">Home</a>
-            </div>
-            
-            <div class="navbar-right">
-                <a href="#">Login</a>
-                <a href="#">Sign Up</a>
-            </div>
+            {% if user.is_authenticated %}
+                <div class="navbar-left">
+                    <a href="{% url 'home' %}" class="logo">Jobifi</a>
+                </div>
+                <div class="navbar-center">
+                    <a href="{% url 'home' %}">Home</a>
+                </div>
+                <div class="navbar-right">
+                    {% if user.profile.role == 'job_seeker' %}
+                        <a href="{% url 'job_seeker_profile' %}">Profile</a>
+                    {% elif user.profile.role == 'employer' %}
+                        <a href="{% url 'employer_profile' %}">Employer Page</a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}">Logout</a>
+                </div>
+            {% else %}
+                <div class="navbar-left">
+                    <a href="{% url 'home' %}" class="logo">Jobifi</a>
+                </div>
+                <div class="navbar-center">
+                    <a href="{% url 'home' %}">Home</a>
+                </div>
+                <div class="navbar-right">
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register_user' %}">Sign Up</a>
+                </div>
+            {% endif %}
         </nav>
     </header>
-
+    
     <main>
         {% block content %}{% endblock %}
     </main>
