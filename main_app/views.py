@@ -88,13 +88,11 @@ def employer_profile(request):
 class CompanyCreate(CreateView):
     model = Company
     fields = '__all__'
-    #TODO Check when im home - Possible conflict without upload functionality / logo 
     success_url = '/companies/'
 
 class CompanyUpdate(UpdateView):
     model = Company
-    fields = ['description', 'location', 'industry', 'website', 'logo']
-    # everything aside from the name
+    fields = '__all__'
 
 class CompanyDelete(DeleteView):
     model = Company
