@@ -1,5 +1,10 @@
 from django import forms
-from .models import Application, Company
+from .models import Application, Company, JobPosting
+
+class JobPostingForm(forms.ModelForm):
+    class Meta:
+        model = JobPosting
+        fields = ['title', 'description', 'company', 'location', 'salary']
 
 class ApplicationForm(forms.ModelForm):
     class Meta:
