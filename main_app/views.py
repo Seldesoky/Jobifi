@@ -152,8 +152,6 @@ def apply_for_job(request, id):
 
 #list job_applications
 
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def job_applications(request, id):
     job = get_object_or_404(JobPosting, id=id)
