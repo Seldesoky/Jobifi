@@ -1,13 +1,15 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, JobPosting
+from .models import UserProfile, JobPosting, Application
 from .forms import JobPostingForm
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-
+from .forms import ApplicationForm
 
 # Create your views Below.
 
@@ -95,6 +97,7 @@ def job_seeker_profile(request):
 def employer_profile(request):
     return(request, 'profile/empolyer.html')
 
+
 #Job CRUD
 def job_create(request):
     if request.method == 'POST':
@@ -129,3 +132,41 @@ def job_delete(request, id):
         return redirect('job_list')
     
     return render(request, 'jobs/job_confirm_delete.html', {'job': job})
+
+# apply_for_job
+
+@login_required
+def apply_for_job(request, id):
+    job = get_object_or_404(JobPosting, id=id)
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.applicant = request.user
+            application.job_posting = job
+            application.save()
+            return redirect('job_detail', id=job.id)
+    else:
+        form = ApplicationForm()
+    return render(request, 'apply_for_job.html', {'form': form, 'job': job})
+
+#list job_applications
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def job_applications(request, id):
+    job = get_object_or_404(JobPosting, id=id)
+    if job.posted_by != request.user:
+        return redirect('job_list') 
+    applications = Application.objects.filter(job_posting=job)
+    return render(request, 'job_applications.html', {'job': job, 'applications': applications})
+
+# application_detail by id
+
+@login_required
+def application_detail(request, id):
+    application = get_object_or_404(Application, id=id)
+    if application.applicant != request.user and application.job_posting.posted_by != request.user:
+        return redirect('job_list') 
+    return render(request, 'application_detail.html', {'application': application})

@@ -10,7 +10,6 @@ urlpatterns = [
     path('accounts/login/', CustomLoginView.as_view(), name='login'),
     path('accounts/logout/', views.logout_view, name='logout'),
 
-
     #Login Pages
     path('profile/job-seeker/', views.job_seeker_profile, name='job_seeker_profile'),
     path('profile/employer/', views.employer_profile, name='employer_profile'),
@@ -23,4 +22,11 @@ urlpatterns = [
     path('jobs/create/', views.job_create, name='job_create'),
     path('jobs/<int:id>/edit', views.job_edit, name='job_edit'),
     path('jobs/<int:id>/delete', views.job_delete, name='job_delete'),
+
+
+    # Application-related URLs
+    path('jobs/<int:id>/apply/', views.apply_for_job, name='apply_for_job'),
+    path('jobs/<int:id>/applications/', views.job_applications, name='job_applications'),
+    path('applications/<int:id>/', views.application_detail, name='application_detail'),
+
     ]
