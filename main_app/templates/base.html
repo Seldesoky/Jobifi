@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jobifi</title>
 
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     
     {% block head %}{% endblock %}
@@ -18,7 +17,9 @@
         <nav class="navbar">
             {% if user.is_authenticated %}
                 <div class="navbar-left">
-                    <a href="{% url 'home' %}" class="logo">Jobifi</a>
+                    <a href="{% url 'home' %}" class="logo">
+                        <img src="https://i.imgur.com/LPaTTW0.png" alt="Jobifi Logo" class="logo-image">
+                    </a>
                 </div>
                 <div class="navbar-center">
                     <a href="{% url 'home' %}">Home</a>
@@ -33,7 +34,9 @@
                 </div>
             {% else %}
                 <div class="navbar-left">
-                    <a href="{% url 'home' %}" class="logo">Jobifi</a>
+                    <a href="{% url 'home' %}" class="logo">
+                        <img src="https://i.imgur.com/LPaTTW0.png" alt="Jobifi Logo" class="logo-image">
+                    </a>
                 </div>
                 <div class="navbar-center">
                     <a href="{% url 'home' %}">Home</a>

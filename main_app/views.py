@@ -1,8 +1,4 @@
-
-from django.shortcuts import render
-from .models import Company
-from django.shortcuts import render, redirect
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -175,8 +171,6 @@ def apply_for_job(request, id):
     return render(request, 'apply_for_job.html', {'form': form, 'job': job})
 
 #list job_applications
-
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def job_applications(request, id):
