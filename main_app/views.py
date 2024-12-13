@@ -8,7 +8,7 @@ from .forms import JobPostingForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from .forms import ApplicationForm
+from .forms import ApplicationForm, UserProfileForm
 
 # Create your views Below.
 
@@ -90,12 +90,35 @@ def job_detail(request, id):
 # Login_Required
 @login_required
 
+#Profiles
+
 def job_seeker_profile(request):
-    return render(request, 'profile/job_seeker.html')
+    if request.user.profile.role != 'job_seeker':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    return render(request, 'profiles/job_seeker_profile.html', {'profile': request.user.profile})
+
+def edit_job_seeker_profile(request):
+    if profile.role != 'job_seeker':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully.")
+            return redirect('job_seeker_profile')
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'profiles/edit_job_seeker_profile.html', {'form': form})
 
 def employer_profile(request):
-    return(request, 'profile/empolyer.html')
-
+    if request.user.profile.role != 'employer':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    return render(request, 'profiles/employer_profile.html', {'profile': request.user.profile, 'company': company})
 
 #Job CRUD
 def job_create(request):
