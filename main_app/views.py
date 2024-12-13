@@ -99,18 +99,18 @@ def job_seeker_profile(request):
     return render(request, 'profiles/job_seeker_profile.html', {'profile': request.user.profile})
 
 def edit_job_seeker_profile(request):
-    if profile.role != 'job_seeker':
+    if request.user.profile.role != 'job_seeker':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
     
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Your profile has been updated successfully.")
             return redirect('job_seeker_profile')
     else:
-        form = UserProfileForm(instance=profile)
+        form = UserProfileForm(instance=request.user.profile)
 
     return render(request, 'profiles/edit_job_seeker_profile.html', {'form': form})
 
@@ -118,8 +118,25 @@ def employer_profile(request):
     if request.user.profile.role != 'employer':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
-    return render(request, 'profiles/employer_profile.html', {'profile': request.user.profile, 'company': company})
+    return render(request, 'profiles/employer_profile.html', {'profile': request.user.profile})
 
+def edit_employer_profile(request):
+    profile = request.user.profile
+    if profile.role != 'employer':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully.")
+            return redirect('employer_profile')
+    else:
+        form = UserProfileForm(instance=profile)
+
+    return render(request, 'profiles/edit_employer_profile.html', {'form': form})
+        
 #Job CRUD
 def job_create(request):
     if request.method == 'POST':
