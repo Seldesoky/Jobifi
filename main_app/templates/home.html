@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -10,8 +10,13 @@
 <section class="hero">
     <div class="hero-content">
         <h1>Find Your Dream Job</h1>
-        <form class="search-form">
-            <input type="text" placeholder="Search for jobs..." class="search-input">
+        <form class="search-form" method="get" action="{% url 'job_search' %}">
+            <input 
+                type="text" 
+                name="q" 
+                placeholder="Search for jobs..." 
+                class="search-input" 
+                value="{{ query|default_if_none:'' }}">
             <button type="submit" class="search-button">Search</button>
         </form>
     </div>

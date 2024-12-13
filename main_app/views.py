@@ -103,21 +103,6 @@ def employer_profile(request):
 
 
 
-
-class CompanyCreate(CreateView):
-    model = Company
-    fields = '__all__'
-    success_url = '/companies/'
-
-class CompanyUpdate(UpdateView):
-    model = Company
-    fields = '__all__'
-
-class CompanyDelete(DeleteView):
-    model = Company
-    success_url = '/companies/'
-
-
 #Job CRUD
 def job_create(request):
     if request.method == 'POST':
@@ -189,3 +174,9 @@ def application_detail(request, id):
         return redirect('job_list') 
     return render(request, 'application_detail.html', {'application': application})
 
+#Job search
+
+def job_search(request):
+    query = request.GET.get('q', '')  # Get the search query
+    results = JobPosting.objects.filter(title__icontains=query) if query else []
+    return render(request, 'job_search.html', {'results': results, 'query': query})
