@@ -15,9 +15,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 5px;
+    padding: 5px 20px; 
     background-color: #1d1d1d;
     color: white;
+    height: 60px; 
 }
 
 .navbar-left .logo {
@@ -43,11 +44,9 @@ body {
 
 /* Logo Image */
 .logo-image {
-    height: 100px;
-    width: auto;
-    margin-right: 10px; 
-    vertical-align: middle; 
-    border-radius: 5px; 
-    object-fit: cover; 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    height: 70px; 
+    width: auto;  
+    margin-right: 15px; 
+    vertical-align: middle;
+    object-fit: contain;
 }
