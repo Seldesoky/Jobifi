@@ -11,9 +11,9 @@ urlpatterns = [
     path('accounts/logout/', views.logout_view, name='logout'),
 
     #Profile Pages
-    path('profile/job-seeker_profile/', views.job_seeker_profile, name='job_seeker_profile'),
+    path('profile/job-seeker/', views.job_seeker_profile, name='job_seeker_profile'),
     path('profile/job-seeker/edit/', views.edit_job_seeker_profile, name='edit_job_seeker_profile'),
-    path('profile/employer_profile/', views.employer_profile, name='employer_profile'),
+    path('profile/employer/', views.employer_profile, name='employer_profile'),
     path('profile/employer/edit/', views.edit_employer_profile, name='edit_employer_profile'),
 
     

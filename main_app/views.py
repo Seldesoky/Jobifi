@@ -93,13 +93,13 @@ def job_detail(request, id):
 #Profiles
 
 def job_seeker_profile(request):
-    if request.user.profile.role != 'job_seeker_profile':
+    if request.user.profile.role != 'job_seeker':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
-    return render(request, 'profile/job_seeker_profile.html', {'profile': request.user.profile})
+    return render(request, 'profile/job_seeker.html', {'profile': request.user.profile})
 
 def edit_job_seeker_profile(request):
-    if request.user.profile.role != 'job_seeker_profile':
+    if request.user.profile.role != 'job_seeker':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
     
@@ -115,14 +115,14 @@ def edit_job_seeker_profile(request):
     return render(request, 'profile/edit_job_seeker.html', {'form': form})
 
 def employer_profile(request):
-    if request.user.profile.role != 'employer_profile':
+    if request.user.profile.role != 'employer':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
     return render(request, 'profile/employer.html', {'profile': request.user.profile})
 
 def edit_employer_profile(request):
     profile = request.user.profile
-    if profile.role != 'employer_profile':
+    if profile.role != 'employer':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
     
@@ -140,7 +140,7 @@ def edit_employer_profile(request):
 #Job CRUD
 def job_create(request):
     if request.user.role != 'employer':
-        return redirect('job_seeker_profile')
+        return redirect('job_seeker')
     
     if request.method == 'POST':
         form = JobPostingForm(request.POST)
@@ -181,7 +181,7 @@ def job_delete(request, id):
 def apply_for_job(request, id):
     job = get_object_or_404(JobPosting, id=id)
 
-    if request.user.role != 'job_seeker_profile':
+    if request.user.role != 'job_seeker':
         return redirect('employer')
     
     job = get_object_or_404(JobPosting, id= id)
