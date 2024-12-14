@@ -139,6 +139,9 @@ def edit_employer_profile(request):
         
 #Job CRUD
 def job_create(request):
+    if request.user.role != 'employer':
+        return redirect('job_seeker_profile')
+    
     if request.method == 'POST':
         form = JobPostingForm(request.POST)
         if form.is_valid():
@@ -177,6 +180,12 @@ def job_delete(request, id):
 @login_required
 def apply_for_job(request, id):
     job = get_object_or_404(JobPosting, id=id)
+
+    if request.user.role != 'job_seeker':
+        return redirect('employer_profile')
+    
+    job = get_object_or_404(JobPosting, id= id)
+
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
