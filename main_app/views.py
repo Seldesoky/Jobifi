@@ -237,3 +237,14 @@ def job_search(request):
 def job_detail(request, id):
     job = get_object_or_404(JobPosting, id=id)
     return render(request, 'job_detail.html', {'job': job})
+
+def job_create(request):
+    if request.method == 'POST':
+        form = JobPostingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('job_list')
+    else:
+        form = JobPostingForm()
+    
+    return render(request, 'jobs/job_create.html', {'form': form})
