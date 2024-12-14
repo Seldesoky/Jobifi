@@ -231,3 +231,9 @@ def job_search(request):
     query = request.GET.get('q', '')  # Get the search query
     results = JobPosting.objects.filter(title__icontains=query) if query else []
     return render(request, 'jobs/job_search.html', {'results': results, 'query': query})
+
+#Job-page by id
+
+def job_detail(request, id):
+    job = get_object_or_404(JobPosting, id=id)
+    return render(request, 'job_detail.html', {'job': job})
