@@ -4,11 +4,10 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from .models import UserProfile, JobPosting, Application
-from .forms import JobPostingForm
+from .forms import JobPostingForm, ApplicationForm, UserProfileForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from .forms import ApplicationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Create your views Below.
 
@@ -95,16 +94,59 @@ def job_detail(request, id):
 # Login_Required
 @login_required
 
+#Profiles
+
 def job_seeker_profile(request):
-    return render(request, 'profile/job_seeker.html')
+    if request.user.profile.role != 'job_seeker':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    return render(request, 'profile/job_seeker.html', {'profile': request.user.profile})
+
+def edit_job_seeker_profile(request):
+    if request.user.profile.role != 'job_seeker':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully.")
+            return redirect('job_seeker_profile')
+    else:
+        form = UserProfileForm(instance=request.user.profile)
+
+    return render(request, 'profile/edit_job_seeker.html', {'form': form})
 
 def employer_profile(request):
-    return(request, 'profile/empolyer.html')
+    if request.user.profile.role != 'employer':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    return render(request, 'profile/employer.html', {'profile': request.user.profile})
 
+def edit_employer_profile(request):
+    profile = request.user.profile
+    if profile.role != 'employer':
+        messages.error(request, "You do not have access to this page.")
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully.")
+            return redirect('employer_profile')
+    else:
+        form = UserProfileForm(instance=profile)
 
+    return render(request, 'profile/edit_employer.html', {'form': form})
+        
 
 #Job CRUD
 def job_create(request):
+    if request.user.role != 'employer':
+        return redirect('job_seeker')
+    
     if request.method == 'POST':
         form = JobPostingForm(request.POST)
         if form.is_valid():
@@ -143,6 +185,12 @@ def job_delete(request, id):
 @login_required
 def apply_for_job(request, id):
     job = get_object_or_404(JobPosting, id=id)
+
+    if request.user.role != 'job_seeker':
+        return redirect('employer')
+    
+    job = get_object_or_404(JobPosting, id= id)
+
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():

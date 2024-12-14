@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{%load static %}
+
+{% block content %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/profile/profile_edit.css' %}">
+{% endblock %}
+
+<h1>Edit Job Seeker Profile</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{% url 'job_seeker_profile' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
