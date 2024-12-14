@@ -4,17 +4,21 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from .models import UserProfile, JobPosting, Application
-from .forms import JobPostingForm
+from .forms import JobPostingForm, ApplicationForm, UserProfileForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from .forms import ApplicationForm, UserProfileForm
-
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Create your views Below.
 
 def home(request):
     return render(request, 'home.html')
 
+
+def company_page(request):
+    
+
+    return render(request, 'company/detail.html',)
 #Authentication / Creation of Users
 
 def register_user(request):
@@ -71,7 +75,7 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('home')   
-     
+    
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -137,6 +141,7 @@ def edit_employer_profile(request):
 
     return render(request, 'profile/edit_employer.html', {'form': form})
         
+
 #Job CRUD
 def job_create(request):
     if request.user.role != 'employer':
@@ -216,3 +221,10 @@ def application_detail(request, id):
     if application.applicant != request.user and application.job_posting.posted_by != request.user:
         return redirect('job_list') 
     return render(request, 'application_detail.html', {'application': application})
+
+#Job search
+
+def job_search(request):
+    query = request.GET.get('q', '')  # Get the search query
+    results = JobPosting.objects.filter(title__icontains=query) if query else []
+    return render(request, 'job_search.html', {'results': results, 'query': query})

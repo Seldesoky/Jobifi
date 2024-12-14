@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -10,27 +10,16 @@
 <section class="hero">
     <div class="hero-content">
         <h1>Find Your Dream Job</h1>
-        <form class="search-form">
-            <input type="text" placeholder="Search for jobs..." class="search-input">
+        <form class="search-form" method="get" action="{% url 'job_search' %}">
+            <input 
+                type="text" 
+                name="q" 
+                placeholder="Search for jobs..." 
+                class="search-input" 
+                value="{{ query|default_if_none:'' }}">
             <button type="submit" class="search-button">Search</button>
         </form>
     </div>
 </section>
-
-<!-- Search Results -->
-<section class="job-results">
-    <h2>Job Listings</h2>
-    <div class="job-list">
-        <div class="job-item">
-            <h3>Software Engineer</h3>
-            <p>Company ABC | Location | Full-time</p>
-            <button class="apply-button">Apply Now</button>
-        </div>
-        <div class="job-item">
-            <h3>Data Scientist</h3>
-            <p>Company XYZ | Location | Full-time</p>
-            <button class="apply-button">Apply Now</button>
-        </div>
-    </div>
-</section>
 {% endblock %}
+
