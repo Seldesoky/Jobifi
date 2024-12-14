@@ -17,6 +17,8 @@
                     <p><strong>Company:</strong> {{ job.company_name }}</p>
                     <p><strong>Location:</strong> {{ job.location }}</p>
                     <p><strong>Salary:</strong> {{ job.salary }}</p>
+                    <a href="{% url 'job_update' job.id %}" class="btn warn">Edit</a>
+                    <a href="{% url 'job_delete' job.id %}" class="btn danger">Delete</a></a>
                 </li>
             {% endfor %}
         </ul>

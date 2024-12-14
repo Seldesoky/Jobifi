@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/job_update.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Edit Job</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+            <button type="submit" class="submit-button">Save Changes</button>
+        <a href="{% url 'job_list' %}" class="">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.container h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #007bff;
+    margin-bottom: 1.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group p {
+    margin-bottom: 1rem;
+}
+
+input,
+textarea {
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
