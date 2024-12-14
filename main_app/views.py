@@ -242,6 +242,8 @@ def job_create(request):
     if request.method == 'POST':
         form = JobPostingForm(request.POST)
         if form.is_valid():
+            job = form.save(commit=False)
+            job.posted_by = request.user # to address the lack of posted_by FK
             form.save()
             return redirect('job_list')
     else:
