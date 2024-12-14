@@ -200,8 +200,8 @@ def apply_for_job(request, id):
             application.applicant = request.user
             application.job_posting = job
             application.save()
-            messages.success(request, "You have successfully applied for the job.")
-            return redirect('job_list') 
+            messages.success(request, "Application submitted successfully!")
+            return redirect('job_list')
     else:
         form = ApplicationForm()
     return render(request, 'jobs/apply_for_job.html', {'form': form, 'job': job})
