@@ -163,6 +163,10 @@ def job_create(request):
 
 @login_required
 def job_edit(request, id):
+
+    if request.user.profile.role != 'employer':
+        return redirect('job_seeker')
+
     job = get_object_or_404(JobPosting, id=id)
     if request.method == 'POST':
         form = JobPostingForm(request.POST, instance=job)
@@ -177,6 +181,10 @@ def job_edit(request, id):
 
 @login_required
 def job_delete(request, id):
+
+    if request.user.profile.role != 'employer':
+        return redirect('job_seeker')
+
     job = get_object_or_404(JobPosting, id=id)
     if request.method == 'POST':
         job.delete()
@@ -193,6 +201,10 @@ def apply_for_job(request, id):
     if request.user.profile.role != 'job_seeker':
         messages.error(request, "Only job seekers can apply for jobs.")
         return redirect('job_list')
+    if request.user.profile.role != 'job_seeker':
+        return redirect('employer')
+    
+    job = get_object_or_404(JobPosting, id= id)
 
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
