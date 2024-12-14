@@ -1,0 +1,62 @@
+/* General Container Styling */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Page Title Styling */
+h1 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.job-title {
+    color: #007BFF;
+    font-weight: bold;
+}
+
+/* Application List Styling */
+.application-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.application-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align text and button vertically */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.application-item p {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+/* View Link Styling */
+.view-link {
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.view-link:hover {
+    background-color: #0056b3;
+}
