@@ -1,5 +1,5 @@
 # Jobifi
-https://imgur.com/WeThKER.png 
+![Jobifi Logo](https://imgur.com/WeThKER.png)
 
 Jobifi is a Django-based job portal designed to connect job seekers and employers in a seamless way. The platform allows users to register as either job seekers or employers, manage their profiles, and apply for or post jobs.
 
