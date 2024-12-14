@@ -1,18 +1,41 @@
 {% extends 'base.html' %}
-{%load static %}
-
-{% block content %}
+{% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/profile/profile_edit.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile/profile_edit.css' %}">
 {% endblock %}
 
-<h1>Edit Job Seeker Profile</h1>
+{% block content %}
+<div class="edit-profile-container">
+    <h1>Edit Job Seeker Profile</h1>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a href="{% url 'job_seeker_profile' %}" class="btn btn-secondary">Cancel</a>
-</form>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_profile_picture">Upload Profile Picture:</label>
+            <input type="file" name="profile_picture" id="id_profile_picture">
+            {% if user.profile.profile_picture %}
+                <div class="profile-picture-container">
+                    <img src="{{ user.profile.profile_picture.url }}" alt="Current Profile Picture">
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_phone_number">Phone Number:</label>
+            {{ form.phone_number }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_bio">Bio:</label>
+            {{ form.bio }}
+        </div>
+
+        <div class="actions-container">
+            <button type="submit" class="btn primary">Save Changes</button>
+            <a href="{% url 'job_seeker_profile' %}" class="btn secondary">Cancel</a>
+        </div>
+    </form>
+</div>
 {% endblock %}
