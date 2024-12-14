@@ -271,7 +271,7 @@ def job_search(request):
 
 def job_detail(request, id):
     job = get_object_or_404(JobPosting, id=id)
-    return render(request, 'job_detail.html', {'job': job})
+    return render(request, 'jobs/job_detail.html', {'job': job})
 
 def job_create(request):
     if request.method == 'POST':
