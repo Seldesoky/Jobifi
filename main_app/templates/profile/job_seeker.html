@@ -1,2 +1,32 @@
-<h1>Job Seeker Profile</h1>
-<p>Welcome, {{ user.username }}!</p>
+{% extends 'base.html' %}
+{%load static%}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/profile/job_seeker.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h1>Welcome, {{ user.username }}!</h1>
+
+    <div class="profile-header">
+        <div class="profile-picture">
+            {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+                <img src="{% static 'images/default_profile_picture.png' %}" alt="Default Profile Picture">
+            {% endif %}
+        </div>
+        <div class="profile-details">
+            <p><strong>Name:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Phone:</strong> {{ user.profile.phone_number|default:"N/A" }}</p>
+            <p><strong>Bio:</strong> {{ user.profile.bio|default:"No bio added yet." }}</p>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'edit_job_seeker_profile' %}" class="btn">Edit Profile</a>
+    </div>
+</div>
+{% endblock %}
