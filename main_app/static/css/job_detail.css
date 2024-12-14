@@ -1,0 +1,97 @@
+/* job_detail.css */
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.job-detail {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.job-detail h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+}
+
+.job-detail p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.job-detail p strong {
+    color: #333;
+}
+
+.job-description, .company-description {
+    margin-top: 2rem;
+}
+
+.job-description h3, .company-description h3 {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions a {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.actions a.back-button {
+    background-color: #ddd;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.actions a.back-button:hover {
+    background-color: #ccc;
+    color: #000;
+}
+
+/* Optional: Style salary differently if provided */
+.job-detail p strong.salary {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Media Query: Responsive Design */
+@media (max-width: 600px) {
+    .job-detail {
+        padding: 1rem;
+    }
+
+    .job-detail h1 {
+        font-size: 1.5rem;
+    }
+
+    .job-description h3, .company-description h3 {
+        font-size: 1.25rem;
+    }
+
+    .actions a {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
