@@ -185,8 +185,8 @@ def job_delete(request, id):
 @login_required
 def apply_for_job(request, id):
     job = get_object_or_404(JobPosting, id=id)
-
-    if request.user.role != 'job_seeker':
+    
+    if request.user.profile.role != 'job_seeker':
         return redirect('employer')
     
     job = get_object_or_404(JobPosting, id= id)
