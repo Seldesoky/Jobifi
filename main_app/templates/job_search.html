@@ -9,6 +9,7 @@
 <section class="query-results">
     <h2>Job Listings for {{query}}</h2>
     <div class="query-list">
+        {% if results %}
         <ul>
             {% for job in results %}
             <li>
@@ -22,6 +23,9 @@
             </li>
             {% endfor %}
         </ul>
+        {% else %}
+            <p>No jobs found matching your search.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
