@@ -14,7 +14,7 @@
     <p><strong>Posted On:</strong> {{ job.created_at|date:"F j, Y" }}</p>
 
     {% if job.salary %}
-        <p><strong>Salary:</strong> ${{ job.salary }}</p>
+        <p><strong class="salary">Salary:</strong> ${{ job.salary }}</p>
     {% else %}
         <p><strong>Salary:</strong> Not specified</p>
     {% endif %}
