@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/job_applications.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>All Applications for Your Posted Jobs</h2>
+    {% if applications %}
+        <ul class="application-list">
+            {% for application in applications %}
+                <li class="application-item">
+                    <h3>{{ application.job_posting.title }}</h3>
+                    <p><strong>Applicant:</strong> {{ application.applicant.username }}</p>
+                    <p><strong>Cover Letter:</strong> {{ application.cover_letter }}</p>
+                    {% if application.resume %}
+                        <p><strong>Resume:</strong> <a href="{{ application.resume.url }}">Download</a></p>
+                    {% endif %}
+                    <a href="{% url 'application_detail' application.id %}" class="btn">View Details</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No applications available for your posted jobs.</p>
+    {% endif %}
+</div>
+{% endblock %}

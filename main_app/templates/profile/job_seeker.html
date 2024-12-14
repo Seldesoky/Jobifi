@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{%load static%}
+{% load static %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/profile/job_seeker.css' %}">
@@ -27,6 +27,7 @@
 
     <div class="profile-actions">
         <a href="{% url 'edit_job_seeker_profile' %}" class="btn">Edit Profile</a>
+        <a href="{% url 'user_applications' %}" class="btn">View Applications</a>
     </div>
 </div>
 {% endblock %}

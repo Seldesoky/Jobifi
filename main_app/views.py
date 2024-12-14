@@ -226,12 +226,34 @@ def application_detail(request, id):
         return redirect('job_list')
     return render(request, 'jobs/application_detail.html', {'application': application})
 
+@login_required
+def all_job_applications(request):
+    if request.user.profile.role != 'employer':
+        messages.error(request, "Only employers can access this page.")
+        return redirect('job_list')
+
+    # Get all jobs posted by the employer
+    jobs_posted = JobPosting.objects.filter(posted_by=request.user)
+
+    # Get all applications for those jobs
+    applications = Application.objects.filter(job_posting__in=jobs_posted)
+
+    return render(request, 'jobs/all_job_applications.html', {'applications': applications})
+
+@login_required
+def user_applications(request):
+    applications = Application.objects.filter(applicant=request.user)
+    return render(request, 'profile/user_applications.html', {'applications': applications})
+
 
 # Job Search
 def job_search(request):
-    query = request.GET.get('q', '')  # Get the search query
-    results = JobPosting.objects.filter(title__icontains=query) if query else []
+    query = request.GET.get('q', '').strip()  # Get the search query 
+    if not query:  # Adding If the query is blank, redirect to /jobs
+        return redirect('job_list')
+    results = JobPosting.objects.filter(title__icontains=query)  # Filter job postings by title
     return render(request, 'jobs/job_search.html', {'results': results, 'query': query})
+
 
 #Job-page by id
 
