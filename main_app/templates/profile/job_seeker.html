@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="profile-container">
-    <h1>Welcome, {{ user.first_name }}!</h1>
+    <h1>Welcome, {{ user.username }}!</h1>
 
     <div class="profile-header">
         <div class="profile-picture">
@@ -18,7 +18,7 @@
             {% endif %}
         </div>
         <div class="profile-details">
-            <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+            <p><strong>Name:</strong> {{ user.username }}</p>
             <p><strong>Email:</strong> {{ user.email }}</p>
             <p><strong>Phone:</strong> {{ user.profile.phone_number|default:"N/A" }}</p>
             <p><strong>Bio:</strong> {{ user.profile.bio|default:"No bio added yet." }}</p>
