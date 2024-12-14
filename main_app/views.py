@@ -144,7 +144,7 @@ def edit_employer_profile(request):
 
 #Job CRUD
 def job_create(request):
-    if request.user.role != 'employer':
+    if request.user.profile.role != 'employer':
         return redirect('job_seeker')
     
     if request.method == 'POST':
@@ -160,6 +160,10 @@ def job_create(request):
     return render(request, 'jobs/job_form.html', {'form': form})
 
 def job_edit(request, id):
+
+    if request.user.profile.role != 'employer':
+        return redirect('job_seeker')
+
     job = get_object_or_404(JobPosting, id=id)
     if request.method == 'POST':
         form = JobPostingForm(request.POST, isinstance=job)
@@ -172,6 +176,10 @@ def job_edit(request, id):
     return render(request, 'jobs/job_form.html', {'form': form, 'job': job})
 
 def job_delete(request, id):
+
+    if request.user.profile.role != 'employer':
+        return redirect('job_seeker')
+
     job = get_object_or_404(JobPosting, id=id)
     if request.method == 'POST':
         job.delete()
@@ -186,7 +194,7 @@ def job_delete(request, id):
 def apply_for_job(request, id):
     job = get_object_or_404(JobPosting, id=id)
 
-    if request.user.role != 'job_seeker':
+    if request.user.profile.role != 'job_seeker':
         return redirect('employer')
     
     job = get_object_or_404(JobPosting, id= id)
