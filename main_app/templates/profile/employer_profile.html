@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/profile/employer.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h1>Welcome, {{ user.first_name }}!</h1>
+
+    <div class="profile-header">
+        <div class="profile-picture">
+            {% if user.profile.company_logo %}
+                <img src="{{ user.profile.company_logo.url }}" alt="Company Logo">
+            {% else %}
+                <img src="{% static 'images/default_company_logo.png' %}" alt="Default Company Logo">
+            {% endif %}
+        </div>
+        <div class="profile-details">
+            <p><strong>Company Name:</strong> {{ user.profile.company_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Industry:</strong> {{ user.profile.industry|default:"N/A" }}</p>
+            <p><strong>About the Company:</strong> {{ user.profile.about_company|default:"No description added yet." }}</p>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'edit_employer_profile' %}" class="btn">Edit Profile</a>
+        <a href="{% url 'job_create' %}" class="btn">Create Job Posting</a>
+        <a href="{% url 'job_list' %}" class="btn">View Job Postings</a>
+    </div>
+</div>
+{% endblock %}
