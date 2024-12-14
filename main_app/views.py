@@ -8,7 +8,7 @@ from .forms import JobPostingForm, ApplicationForm, UserProfileForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 # Create your views Below.
 
 def home(request):
@@ -16,11 +16,10 @@ def home(request):
 
 
 def company_page(request):
-    
-
     return render(request, 'company/detail.html',)
-#Authentication / Creation of Users
 
+
+# Authentication / Creation of Users
 def register_user(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -34,20 +33,17 @@ def register_user(request):
         # Password check
         if password != password_confirm:
             messages.error(request, "Passwords do not match.")
-            print('pass1')
             return redirect("register_user")
 
-        # If there is already an existing account
+        # Check for existing user
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username is already in use.")
-            print('user2')
             return redirect("register_user")
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email is already in use.")
-            print('email3')
             return redirect("register_user")
         
-        # Create User
+        # Create User and Profile
         try:
             user = User.objects.create_user(username=username, email=email, password=password)
             UserProfile.objects.create(
@@ -58,50 +54,49 @@ def register_user(request):
             )
             login(request, user)
             messages.success(request, "User has been created successfully.")
-            print('home4')
             return redirect("home")
-        
         except Exception as e:
             messages.error(request, f"Error creating user: {e}")
             return redirect("register_user")
     
     # Render registration form
     return render(request, 'accounts/register.html')
-# Change Django registration to custom template "accounts"
-class CustomLoginView(LoginView):
 
+
+class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
     redirect_authenticated_user = True
 
     def get_success_url(self):
         return reverse_lazy('home')   
-    
+
+
 def logout_view(request):
     logout(request)
     return redirect('login')
 
-#Job Views
 
+# Job Views
 def job_list(request):
     jobs = JobPosting.objects.all()
-    return render(request, 'jobs/job_list.html', {'jobs' : jobs})
+    return render(request, 'jobs/job_list.html', {'jobs': jobs})
+
 
 def job_detail(request, id):
     job = get_object_or_404(JobPosting, id=id)
     return render(request, 'jobs/job_detail.html', {'job': job})
 
 
-# Login_Required
+# Profiles
 @login_required
-
-#Profiles
-
 def job_seeker_profile(request):
     if request.user.profile.role != 'job_seeker':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
     return render(request, 'profile/job_seeker.html', {'profile': request.user.profile})
 
+
+@login_required
 def edit_job_seeker_profile(request):
     if request.user.profile.role != 'job_seeker':
         messages.error(request, "You do not have access to this page.")
@@ -118,12 +113,16 @@ def edit_job_seeker_profile(request):
 
     return render(request, 'profile/edit_job_seeker.html', {'form': form})
 
+
+@login_required
 def employer_profile(request):
     if request.user.profile.role != 'employer':
         messages.error(request, "You do not have access to this page.")
         return redirect('home')
     return render(request, 'profile/employer.html', {'profile': request.user.profile})
 
+
+@login_required
 def edit_employer_profile(request):
     profile = request.user.profile
     if profile.role != 'employer':
@@ -140,12 +139,13 @@ def edit_employer_profile(request):
         form = UserProfileForm(instance=profile)
 
     return render(request, 'profile/edit_employer.html', {'form': form})
-        
 
-#Job CRUD
+
+# Job CRUD
+@login_required
 def job_create(request):
-    if request.user.role != 'employer':
-        return redirect('job_seeker')
+    if request.user.profile.role != 'employer':
+        return redirect('home')
     
     if request.method == 'POST':
         form = JobPostingForm(request.POST)
@@ -159,10 +159,12 @@ def job_create(request):
         form = JobPostingForm()
     return render(request, 'jobs/job_form.html', {'form': form})
 
+
+@login_required
 def job_edit(request, id):
     job = get_object_or_404(JobPosting, id=id)
     if request.method == 'POST':
-        form = JobPostingForm(request.POST, isinstance=job)
+        form = JobPostingForm(request.POST, instance=job)
         if form.is_valid():
             form.save()
             messages.success(request, 'Job posting updated successfully.')
@@ -171,25 +173,25 @@ def job_edit(request, id):
         form = JobPostingForm(instance=job)
     return render(request, 'jobs/job_form.html', {'form': form, 'job': job})
 
+
+@login_required
 def job_delete(request, id):
     job = get_object_or_404(JobPosting, id=id)
     if request.method == 'POST':
         job.delete()
         messages.success(request, 'Job posting deleted')
         return redirect('job_list')
-    
     return render(request, 'jobs/job_confirm_delete.html', {'job': job})
 
-# apply_for_job
 
+# Applications
 @login_required
 def apply_for_job(request, id):
     job = get_object_or_404(JobPosting, id=id)
 
-    if request.user.role != 'job_seeker':
-        return redirect('employer')
-    
-    job = get_object_or_404(JobPosting, id= id)
+    if request.user.profile.role != 'job_seeker':
+        messages.error(request, "Only job seekers can apply for jobs.")
+        return redirect('job_list')
 
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
@@ -198,33 +200,34 @@ def apply_for_job(request, id):
             application.applicant = request.user
             application.job_posting = job
             application.save()
-            return redirect('job_detail', id=job.id)
+            messages.success(request, "You have successfully applied for the job.")
+            return redirect('job_list') 
     else:
         form = ApplicationForm()
-    return render(request, 'apply_for_job.html', {'form': form, 'job': job})
+    return render(request, 'jobs/apply_for_job.html', {'form': form, 'job': job})
 
-#list job_applications
 
 @login_required
 def job_applications(request, id):
     job = get_object_or_404(JobPosting, id=id)
     if job.posted_by != request.user:
-        return redirect('job_list') 
+        messages.error(request, "You do not have access to view applications for this job.")
+        return redirect('job_list')
     applications = Application.objects.filter(job_posting=job)
-    return render(request, 'job_applications.html', {'job': job, 'applications': applications})
+    return render(request, 'jobs/job_applications.html', {'job': job, 'applications': applications})
 
-# application_detail by id
 
 @login_required
 def application_detail(request, id):
     application = get_object_or_404(Application, id=id)
     if application.applicant != request.user and application.job_posting.posted_by != request.user:
-        return redirect('job_list') 
-    return render(request, 'application_detail.html', {'application': application})
+        messages.error(request, "You do not have access to this application.")
+        return redirect('job_list')
+    return render(request, 'jobs/application_detail.html', {'application': application})
 
-#Job search
 
+# Job Search
 def job_search(request):
     query = request.GET.get('q', '')  # Get the search query
     results = JobPosting.objects.filter(title__icontains=query) if query else []
-    return render(request, 'job_search.html', {'results': results, 'query': query})
+    return render(request, 'jobs/job_search.html', {'results': results, 'query': query})
