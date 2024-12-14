@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/profile/user_applications.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Your Applications</h2>
+    {% if applications %}
+        <ul class="application-list">
+            {% for application in applications %}
+                <li>
+                    <h3>{{ application.job_posting.title }}</h3>
+                    <p><strong>Application Date:</strong> {{ application.applied_at }}</p>
+                    <p><strong>Status:</strong> {{ application.status }}</p>
+                    <a href="{% url 'application_detail' application.id %}" class="btn">View Details</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't applied for any jobs yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

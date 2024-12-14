@@ -1,8 +1,0 @@
-<h1>Applications for {{ job.title }}</h1>
-<ul>
-    {% for application in applications %}
-        <li>
-            {{ application.applicant.username }} - <a href="{% url 'application_detail' application.id %}">View Application</a>
-        </li>
-    {% endfor %}
-</ul>

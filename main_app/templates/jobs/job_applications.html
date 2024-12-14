@@ -1,0 +1,25 @@
+<!-- {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/job_applications.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Applications for <span class="job-title">{{ job.title }}</span></h1>
+
+    {% if applications %}
+        <ul class="application-list">
+            {% for application in applications %}
+                <li class="application-item">
+                    <p><strong>Applicant:</strong> {{ application.applicant.username }}</p>
+                    <a href="{% url 'application_detail' application.id %}" class="view-link">View Application</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-applications">No applications available for this job yet.</p>
+    {% endif %}
+</div>
+{% endblock %} -->

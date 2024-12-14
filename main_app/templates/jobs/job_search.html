@@ -4,21 +4,23 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/job_search.css' %}">
 {% endblock %}
+
 {% block content %}
 
 <section class="query-results">
-    <h2>Job Listings for {{query}}</h2>
+    <h2>Job Listings for "{{ query }}"</h2>
     <div class="query-list">
         {% if results %}
         <ul>
             {% for job in results %}
             <li>
                 <div class="query-item">
-                    <h3>{{job.title}}</h3>
+                    <h3>{{ job.title }}</h3>
                     <p>{{ job.description }}</p>
                     <p><strong>Company:</strong> {{ job.company_name }}</p>
                     <p><strong>Location:</strong> {{ job.location }}</p>
-                    <a href=""></a>
+                    <p><strong>Salary:</strong> {{ job.salary }}</p>
+                    <a href="{% url 'apply_for_job' job.id %}" class="apply-button">Apply Now</a>
                 </div>
             </li>
             {% endfor %}
@@ -28,4 +30,5 @@
         {% endif %}
     </div>
 </section>
+
 {% endblock %}

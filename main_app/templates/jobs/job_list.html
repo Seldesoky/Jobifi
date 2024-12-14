@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/jobs.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2>Available Jobs</h2>
+
+    {% if jobs %}
+        <ul class="job-list">
+            {% for job in jobs %}
+                <li>
+                    <a href="{% url 'job_detail' job.id %}">{{ job.title }}</a>
+                    <p><strong>Company:</strong> {{ job.company_name }}</p>
+                    <p><strong>Location:</strong> {{ job.location }}</p>
+                    <p><strong>Salary:</strong> {{ job.salary }}</p>
+                    <a href="{% url 'job_update' job.id %}" class="btn warn">Edit</a>
+                    <a href="{% url 'job_delete' job.id %}" class="btn danger">Delete</a></a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No jobs available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

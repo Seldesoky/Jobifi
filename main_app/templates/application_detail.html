@@ -1,7 +1,0 @@
-<h1>Application Details</h1>
-<p><strong>Applicant:</strong> {{ application.applicant.username }}</p>
-<p><strong>Cover Letter:</strong></p>
-<p>{{ application.cover_letter }}</p>
-{% if application.resume %}
-    <p><strong>Resume:</strong> <a href="{{ application.resume.url }}">Download</a></p>
-{% endif %}

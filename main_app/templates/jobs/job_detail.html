@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/job_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="job-detail">
+    <h1>{{ job.title }}</h1>
+    <p><strong>Company:</strong> {{ job.company_name }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Posted By:</strong> {{ job.posted_by.username }}</p>
+    <p><strong>Posted On:</strong> {{ job.created_at|date:"F j, Y" }}</p>
+
+    {% if job.salary %}
+        <p><strong class="salary">Salary:</strong> ${{ job.salary }}</p>
+    {% else %}
+        <p><strong>Salary:</strong> Not specified</p>
+    {% endif %}
+
+    <div class="job-description">
+        <h3>Job Description</h3>
+        <p>{{ job.description }}</p>
+    </div>
+
+    {% if job.company_description %}
+    <div class="company-description">
+        <h3>About the Company</h3>
+        <p>{{ job.company_description }}</p>
+    </div>
+    {% endif %}
+
+    <div class="actions">
+        <a href="{% url 'apply_for_job' job.id %}" class="apply-button">Apply Now</a>
+        <a href="{% url 'home' %}" class="back-button">Back to Listings</a>
+    </div>
+</section>
+{% endblock %}
