@@ -7,6 +7,7 @@ from .models import UserProfile, JobPosting, Application
 from .forms import JobPostingForm, ApplicationForm, UserProfileForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 # Create your views Below.
@@ -259,3 +260,32 @@ def job_search(request):
 def job_detail(request, id):
     job = get_object_or_404(JobPosting, id=id)
     return render(request, 'job_detail.html', {'job': job})
+
+def job_create(request):
+    if request.method == 'POST':
+        form = JobPostingForm(request.POST)
+        if form.is_valid():
+            job = form.save(commit=False)
+            job.posted_by = request.user # to address the lack of posted_by FK
+            form.save()
+            return redirect('job_list')
+    else:
+        form = JobPostingForm()
+    
+    return render(request, 'jobs/job_create.html', {'form': form})
+
+class JobUpdate(UpdateView):
+    model = JobPosting
+    fields = [
+        'title',
+        'description',
+        'company_name',
+        'company_description',
+        'location',
+        'salary'
+        ]
+    success_url = reverse_lazy('job_list')
+
+class JobDelete(DeleteView):
+    model = JobPosting
+    success_url = '/jobs/'

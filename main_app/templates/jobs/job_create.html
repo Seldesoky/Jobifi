@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/job_create.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="job-create">
+    <h1>Create a New Job</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="submit-button">Create Job</button>
+    </form>
+
+    <div class="back-link">
+        <a href="{% url 'job_list' %}">Back to Job Listings</a>
+    </div>
+</section>
+{% endblock %}

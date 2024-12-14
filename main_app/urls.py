@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views 
-from .views import CustomLoginView
+from .views import CustomLoginView , JobUpdate, JobDelete
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -23,8 +23,8 @@ urlpatterns = [
 
     #Job Create, Read, Delete
     path('jobs/create/', views.job_create, name='job_create'),
-    path('jobs/<int:id>/edit', views.job_edit, name='job_edit'),
-    path('jobs/<int:id>/delete', views.job_delete, name='job_delete'),
+    path('jobs/<int:pk>/edit/', JobUpdate.as_view(), name='job_update'),
+    path('jobs/<int:pk>/delete', JobDelete.as_view(), name='job_delete'),
 
 
     # Application-related URLs
