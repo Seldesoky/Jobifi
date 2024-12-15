@@ -7,6 +7,10 @@ name = "pypi"
 psycopg2-binary = "*"
 django = "*"
 pillow = "*"
+python-dotenv = "*"
+whitenoise = "*"
+gunicorn = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
